@@ -1,6 +1,6 @@
 {
   "name": "xmp-escape-loader",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,11 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "block-loader": "^2.1.0",
+    "escape-html": "^1.0.3",
+    "loader-utils": "^1.1.0"
+  },
   "devDependencies": {
     "babel-eslint": "^8.0.1",
     "eslint": "^4.10.0",
