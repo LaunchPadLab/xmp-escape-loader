@@ -1,38 +1,45 @@
-const blockLoader = require('block-loader')
-const { getOptions } = require('loader-utils')
-const escapeHtml = require('escape-html')
+var blockLoader = require('block-loader')
+var getOptions = require('loader-utils').getOptions
+var escapeHtml = require('escape-html')
 
+// Strip tags to inner text and format open/closed.
+// This allows tags to defined as '<xmp>' or 'xmp'
 function getDelimiters (tag) {
-  const strippedTag = tag
+  var strippedTag = tag
     .replace('<', '')
     .replace('>', '')
-    .replace('/', '')
   return {
-    start: `<${ strippedTag }>`,
-    end: `</${ strippedTag }>`,
+    start: '<' + strippedTag + '>',
+    end: '</' + strippedTag + '>',
   }
 }
 
-function getMiddleText (str, start='', end='') {
-  const re = new RegExp(`${ start }(.*)${ end }`)
-  return str.match(re)[1]
+// Escape inner text between delimiters
+function escapeTextInDelimiters (str, start, end) {
+  var middleTextRegex = new RegExp(start + '(.*)' + end)
+  var middleText = str.match(middleTextRegex)[1]
+  return start + escapeHtml(middleText) + end
 }
 
-function loaderWithTag (tag='pre') {
-  const { start, end } = getDelimiters(tag)
+// Create block loader with given tag delimiter
+function loaderWithTag (tag) {
+  var delimiters = getDelimiters(tag)
+  var start = delimiters.start
+  var end = delimiters.end
   return blockLoader({
-    start,
-    end,
-    process: str => {
-      const middleText = getMiddleText(str, start, end)
-      return start +  escapeHtml(middleText) + end
+    start: start,
+    end: end,
+    process: function (str) {
+      return escapeTextInDelimiters(str, start, end) 
     }
   })
 }
 
+// Parse options and call block loader
 function load (data) {
-  const options = getOptions(this) || {}
-  const loader = loaderWithTag(options.tag)
+  var options = getOptions(this) || {}
+  var tag = options.tag || 'xmp'
+  var loader = loaderWithTag(tag)
   return loader(data)
 }
 
