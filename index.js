@@ -1,5 +1,6 @@
 const blockLoader = require('block-loader')
 const { getOptions } = require('loader-utils')
+const escapeHtml = require('escape-html')
 
 function getDelimiters (tag) {
   const strippedTag = tag
@@ -12,22 +13,19 @@ function getDelimiters (tag) {
   }
 }
 
+function getMiddleText (str, start='', end='') {
+  const re = new RegExp(`${ start }(.*)${ end }`)
+  return str.match(re)[1]
+}
+
 function loaderWithTag (tag='pre') {
   const { start, end } = getDelimiters(tag)
   return blockLoader({
     start,
     end,
     process: str => {
-      const replaced = str
-        .replace(start, '')           // first, remove the start/end delimiters, then:
-        .replace(end, '')              //
-        .replace(/&/g, '&amp;')       // 1. use html entity equivalent,
-        .replace(/</g, '&lt;')        // 2. use html entity equivalent,
-        .replace(/>/g, '&gt;')        // 3. use html entity equivalent,
-        .replace(/([{}])/g, `{'$1'}`) // 4. JSX-safify curly braces,
-        .replace(/\n/g, `{'\\n'}`);   // 5. and preserve line endings, thanks.
-      // done! return with the delimiters put back in place
-      return start + replaced + end
+      const middleText = getMiddleText(str, start, end)
+      return start +  escapeHtml(middleText) + end
     }
   })
 }
