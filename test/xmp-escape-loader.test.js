@@ -13,8 +13,8 @@ test('can receive custom tag', () => {
   expect(output).toEqual('<pre>&lt;div&gt; Test &lt;/div&gt;</pre>')
 })
 
-test('works on nested tags', () => {
-  const input = '<xmp><xmp> Test </xmp></xmp>'
+test('works on multiline inputs', () => {
+  const input = '<xmp>\n<div> Test </div>\n</xmp>'
   const output = xmpEscapeLoader(input)
-  expect(output).toEqual('<xmp>&lt;xmp&gt; Test </xmp></xmp>')
+  expect(output).toEqual('<xmp>\n&lt;div&gt; Test &lt;/div&gt;\n</xmp>')
 })

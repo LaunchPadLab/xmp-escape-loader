@@ -16,8 +16,7 @@ function getDelimiters (tag) {
 
 // Escape inner text between delimiters
 function escapeTextInDelimiters (str, start, end) {
-  var middleTextRegex = new RegExp(start + '(.*)' + end)
-  var middleText = str.match(middleTextRegex)[1]
+  var middleText = str.slice(start.length, end.length * -1)
   return start + escapeHtml(middleText) + end
 }
 
