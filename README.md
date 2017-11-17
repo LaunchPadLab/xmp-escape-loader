@@ -30,7 +30,7 @@ To load your code with this loader, simply add it to your existing JS loaders in
     ...
     rules: [
       {
-        test: /\.(js)$/,
+        test: /\.js$/,
         use: [
           'babel-loader',
           'xmp-escape-loader',
@@ -43,7 +43,7 @@ To load your code with this loader, simply add it to your existing JS loaders in
     ...
     rules: [
       {
-        test: /\.(js)$/,
+        test: /\.js$/,
         use: [
           'babel-loader',
           {
