@@ -56,6 +56,24 @@ To load your code with this loader, simply add it to your existing JS loaders in
       },
       ...
     ],
+
+// with custom escape
+    ...
+    rules: [
+      {
+        test: /\.js$/,
+        use: [
+          'babel-loader',
+          {
+            loader: 'xmp-escape-loader',
+            options: {
+              escape: string => escapeHtml(string).toLowerCase()
+            }
+          },
+        ],
+      },
+      ...
+    ],
 ```
 
 ### How it works

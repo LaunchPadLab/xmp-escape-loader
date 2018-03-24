@@ -38,6 +38,9 @@ function loaderWithTag (tag) {
 function load (data) {
   var options = getOptions(this) || {}
   var tag = options.tag || 'xmp'
+  if (options.escape) {
+    escapeHtml = options.escape
+  }
   var loader = loaderWithTag(tag)
   return loader(data)
 }

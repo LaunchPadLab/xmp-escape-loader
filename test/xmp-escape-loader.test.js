@@ -1,4 +1,5 @@
 const xmpEscapeLoader = require('../index')
+const escapeHtml = require('escape-html')
 
 test('defaults to xmp tag', () => {
   const input = '<xmp><div> Test </div></xmp>'
@@ -17,4 +18,11 @@ test('works on multiline inputs', () => {
   const input = '<xmp>\n<div> Test </div>\n</xmp>'
   const output = xmpEscapeLoader(input)
   expect(output).toEqual('<xmp>\n&lt;div&gt; Test &lt;/div&gt;\n</xmp>')
+})
+
+test('can receive custom escape', () => {
+  const input = '<xmp><div> Test </div></xmp>'
+  const customLoader = xmpEscapeLoader.bind({ query: { escape: string => escapeHtml(string).toLowerCase() } })
+  const output = customLoader(input)
+  expect(output).toEqual('<xmp>&lt;div&gt; test &lt;/div&gt;</xmp>')
 })
