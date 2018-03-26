@@ -14,14 +14,8 @@ function getDelimiters (tag) {
   }
 }
 
-// Escape inner text between delimiters
-function escapeTextInDelimiters (str, start, end) {
-  var middleText = str.slice(start.length, end.length * -1)
-  return start + escapeHtml(middleText) + end
-}
-
 // Create block loader with given tag delimiter
-function loaderWithTag (tag) {
+function loaderWithTag (tag, escape) {
   var delimiters = getDelimiters(tag)
   var start = delimiters.start
   var end = delimiters.end
@@ -29,7 +23,8 @@ function loaderWithTag (tag) {
     start: start,
     end: end,
     process: function (str) {
-      return escapeTextInDelimiters(str, start, end) 
+      var middleText = str.slice(start.length, end.length * -1)
+      return start + escape(middleText) + end
     }
   })
 }
@@ -38,7 +33,8 @@ function loaderWithTag (tag) {
 function load (data) {
   var options = getOptions(this) || {}
   var tag = options.tag || 'xmp'
-  var loader = loaderWithTag(tag)
+  var escape = options.escape || escapeHtml
+  var loader = loaderWithTag(tag, escape)
   return loader(data)
 }
 
