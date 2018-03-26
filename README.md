@@ -23,7 +23,7 @@ function MyXMPComponent () {
 
 ### Usage
 
-To load your code with this loader, simply add it to your existing JS loaders in your webpack config. It's also possible to use a tag ther than `<xmp>` by passing in a loader option.
+To load your code with this loader, simply add it to your existing JS loaders in your webpack config. It's also possible to use a tag other than `<xmp>` by passing in a loader option.
 
 ```jsx
 // webpack.config.js
@@ -57,7 +57,7 @@ To load your code with this loader, simply add it to your existing JS loaders in
       ...
     ],
 
-// with custom escape
+// with custom escape function
     ...
     rules: [
       {

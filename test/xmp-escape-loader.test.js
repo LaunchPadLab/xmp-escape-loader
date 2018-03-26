@@ -22,7 +22,8 @@ test('works on multiline inputs', () => {
 
 test('can receive custom escape', () => {
   const input = '<xmp><div> Test </div></xmp>'
-  const customLoader = xmpEscapeLoader.bind({ query: { escape: string => escapeHtml(string).toLowerCase() } })
+  const escape = (string) => escapeHtml(string).toLowerCase()
+  const customLoader = xmpEscapeLoader.bind({ query: { escape } })
   const output = customLoader(input)
   expect(output).toEqual('<xmp>&lt;div&gt; test &lt;/div&gt;</xmp>')
 })
